@@ -1,35 +1,36 @@
 <img width="20%" src="https://raw.githubusercontent.com/pelican-dev/panel/main/public/pelican.svg" alt="logo">
 
-# Pelican Panel
+# Phantom Panel
 
 **Built for Minecraft, built for you.**
 
 ![Total Downloads](https://img.shields.io/github/downloads/pwindows/phantom-panel/total?style=flat&label=Total%20Downloads&labelColor=%23ffce02&color=%23ffffff)
 ![Latest Release](https://img.shields.io/github/v/release/pwindows/phantom-panel?style=flat&label=Latest%20Release&labelColor=%23ffce02&color=%23ffffff)  
 
-Pelican Panel is a free, open-source game server control panel built for communities, hosts, and self-hosters.
-It gives users a modern web UI for creating and managing game servers while running each server in an isolated Docker container through Wings.
+Phantom Panel is a free, open-source game server control panel built for Minecraft communities, hosts, and self-hosters.
+It gives users a modern web UI for creating and managing game servers natively. 
 
-## Why Pelican?
+## Why Phantom? 
 
-Use Pelican if you want:
+Use Phantom if you want:
 - A modern alternative in the Pterodactyl ecosystem
-- Docker-isolated game servers
-- Support for Minecraft, SteamCMD games, databases, bots, voice servers, and more
-- A free, open-source panel suitable for personal servers, communities, and hosting providers
+- Dedicated support for Minecraft
+- The BEST Minecraft hosting experience
+- A free, open-source panel suitable for personal Minecraft servers, communities, and hosting providers
 
 ## Support
 
 * [Read the documentation](https://pelican.dev/docs)
-* [Join the Discord](https://discord.gg/pelican-panel)
-* [Wings](https://github.com/pelican-dev/wings)
-* [Open a GitHub Discussion for general project questions](https://github.com/pelican-dev/panel/discussions)
-* [Open an Issue for confirmed bugs](https://github.com/pelican-dev/panel/issues)
+* [Join the Discord](https://discord.pwindows.qzz.io/)
+* [Wings](https://github.com/pwindows/phantom-wings/)
+* [Open a GitHub Discussion for general project questions](https://github.com/pwindows/phantom-panel/discussions)
+* [Open an Issue for confirmed bugs](https://github.com/pwindows/phantom-panel/issues)
 
-## Supported Games and Servers
+## Built for Minecraft, built for you. 
 
-Pelican supports a wide variety of games by utilizing Docker containers to isolate each instance.
-This gives you the power to run game servers without bloating machines with a host of additional dependencies.
+Though Phantom is based off Pelican, which supports a variety of games and services, Phantom is dedicated to Minecraft hosting. However we do encourage people to create Phantom eggs and for Phantom to be used for more purposes. Ultimately, our goal is to create a better and more unified Minecraft hosting experience. 
+
+Pelican supports a wide variety of games. Phantom does too. We are currently still using Pelican's eggs. 
 
 Some of our popular eggs include:
 
@@ -62,14 +63,14 @@ Good places to start:
 
 ## Supporting the Project
 
-Pelican is built and maintained by volunteers. If Pelican helps you or your community, consider supporting ongoing development:
+Phantom is built and maintained by volunteers. If Phantom helps you or your community, consider supporting ongoing development:
 
 - [Sponsor the project](https://hub.pelican.dev/sponsor)
-- [Contribute code or documentation](https://github.com/pelican-dev/panel)
+- [Contribute code or documentation](https://github.com/pwindows/phantom-panel/)
 - [Help answer questions in Discord](https://discord.com/channels/1218730176297439332/1219038617133912084)
 - Share Pelican with other server owners
 
 ## Repository Activity
 ![Stats](https://repobeats.axiom.co/api/embed/4d8cc7012b325141e6fae9c34a22b3669ad5753b.svg "Repobeats analytics image")
 
-*Copyright Pelican® 2024-2026*
+*© PWindows™ 2026 — Phantom Panel*
