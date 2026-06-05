@@ -68,7 +68,7 @@ Phantom is built and maintained by volunteers. If Phantom helps you or your comm
 - [Sponsor the project](https://hub.pelican.dev/sponsor)
 - [Contribute code or documentation](https://github.com/pwindows/phantom-panel/)
 - [Help answer questions in Discord](https://discord.com/channels/1218730176297439332/1219038617133912084)
-- Share Pelican with other server owners
+- Share Phantom with other server owners
 
 ## Repository Activity
 ![Stats](https://repobeats.axiom.co/api/embed/4d8cc7012b325141e6fae9c34a22b3669ad5753b.svg "Repobeats analytics image")
