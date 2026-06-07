@@ -71,6 +71,6 @@ Phantom is built and maintained by volunteers. If Phantom helps you or your comm
 - Share Phantom with other server owners
 
 ## Repository Activity
-![Stats](https://repobeats.axiom.co/api/embed/4d8cc7012b325141e6fae9c34a22b3669ad5753b.svg "Repobeats analytics image")
+![Alt](https://repobeats.axiom.co/api/embed/ece41309e82bddb06e192a4248c6a9ad8e4eaf4c.svg "Repobeats analytics image")
 
 *© PWindows™ 2026 — Phantom Panel*
