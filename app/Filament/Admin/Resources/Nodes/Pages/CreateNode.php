@@ -92,6 +92,11 @@ class CreateNode extends CreateRecord
 
                             $ip = $get('ip');
 
+                            // Allow private/local IPs for self-hosted setups
+                            if (empty($ip)) {
+                                return false;
+                            }
+
                             return !is_ip($ip);
                         })
                         ->hintColor(function ($state, Get $get) {
@@ -126,6 +131,19 @@ class CreateNode extends CreateRecord
                                 return is_ip($ip) ? trans('admin/node.valid') . ': ' . $ip : trans('admin/node.invalid');
                             }
 
+                            return null;
+                        })
+                        ->hintIcon(TablerIcon::AlertTriangle)
+                        ->hint(function ($state) {
+                            if (in_array($state, ['127.0.0.1', 'localhost', '0.0.0.0'])) {
+                                return trans('admin/node.local_ip_warning');
+                            }
+                            return null;
+                        })
+                        ->hintColor(function ($state) {
+                            if (in_array($state, ['127.0.0.1', 'localhost', '0.0.0.0'])) {
+                                return 'warning';
+                            }
                             return null;
                         })
                         ->afterStateUpdated(function (Set $set, ?string $state) {

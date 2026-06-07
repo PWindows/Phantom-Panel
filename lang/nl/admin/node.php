@@ -37,6 +37,7 @@ return [
 
     'ip_address' => 'IP-adres',
     'ip_help' => 'Meestal het openbare IP-adres van uw machine, tenzij u poort-forwarding gebruikt.',
+    'local_ip_warning' => 'Waarschuwing: Een lokaal IP-adres gebruiken betekent dat Wings op dezelfde machine als het Panel moet zijn.',
     'alias_help' => 'Optionele weergavenaam om u te helpen onthouden wat deze zijn.',
     'refresh' => 'Vernieuw',
     'domain' => 'Domeinnaam',

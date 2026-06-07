@@ -37,6 +37,7 @@ return [
 
     'ip_address' => 'IP adresa',
     'ip_help' => 'Obvykle veřejná IP adresa Vašeho počítače, pokud neportujete přeposílání.',
+    'local_ip_warning' => 'Upozornění: Použití místní IP adresy znamená, že Wings musí být na stejném počítači jako Panel.',
     'alias_help' => 'Volitelné zobrazované jméno, které vám pomůže si zapamatovat, co to je.',
     'refresh' => 'Obnovit',
     'domain' => 'Název domény',

@@ -37,6 +37,7 @@ return [
 
     'ip_address' => 'Adresse IP',
     'ip_help' => 'Habituellement, l\'IP publique de votre machine à moins que vous ne fassiez une redirection de port.',
+    'local_ip_warning' => 'Avertissement : L\'utilisation d\'une adresse IP locale signifie que Wings doit être sur la même machine que le Panel.',
     'alias_help' => 'Nom d\'affichage facultatif pour vous aider à vous souvenir de ce que sont ces éléments.',
     'refresh' => 'Actualiser',
     'domain' => 'Nom de domaine',

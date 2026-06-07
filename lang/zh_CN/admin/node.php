@@ -37,6 +37,7 @@ return [
 
     'ip_address' => 'IP 地址',
     'ip_help' => '请直接使用您的外网IP，除非您的服务器处于VPC网络中',
+    'local_ip_warning' => '警告：使用本地 IP 位址意味着 Wings 必须与控制板在同一个主机上。',
     'alias_help' => '可选的显示名称帮助您记住这些是什么。',
     'refresh' => '刷新',
     'domain' => '域名',

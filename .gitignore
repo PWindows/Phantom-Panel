@@ -27,3 +27,11 @@ public/assets/manifest.json
 /database/*.sqlite*
 _ide_helper*
 /.phpstorm.meta.php
+
+/.vs
+/.claude
+/.codex
+
+/database
+.env
+package-lock.json

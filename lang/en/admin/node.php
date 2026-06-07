@@ -38,6 +38,7 @@ return [
 
     'ip_address' => 'IP Address',
     'ip_help' => 'Usually your machine\'s public IP unless you are port forwarding.',
+    'local_ip_warning' => 'Warning: Using a local IP address means Wings must be on the same machine as the Panel.',
     'alias_help' => 'Optional display name to help you remember what these are.',
     'refresh' => 'Refresh',
     'custom_ip' => 'Enter Custom IP',
