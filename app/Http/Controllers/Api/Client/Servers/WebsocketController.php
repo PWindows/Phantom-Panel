@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Client\Servers;
 
+use App\Enums\NodeJwtScope;
 use App\Enums\SubuserPermission;
 use App\Exceptions\Http\HttpForbiddenException;
 use App\Http\Controllers\Api\Client\ClientApiController;
@@ -37,18 +38,14 @@ class WebsocketController extends ClientApiController
     public function __invoke(ClientApiRequest $request, Server $server): JsonResponse
     {
         $user = $request->user();
-        if ($user->cannot(SubuserPermission::WebsocketConnect, $server)) {
-            throw new HttpForbiddenException('You do not have permission to connect to this server\'s websocket.');
-        }
+        throw_if($user->cannot(SubuserPermission::WebsocketConnect, $server), new HttpForbiddenException('You do not have permission to connect to this server\'s websocket.'));
 
         $permissions = $this->permissionsService->handle($server, $user);
 
         $node = $server->node;
         if (!is_null($server->transfer)) {
             // Check if the user has permissions to receive transfer logs.
-            if (!in_array('admin.websocket.transfer', $permissions)) {
-                throw new HttpForbiddenException('You do not have permission to view server transfer logs.');
-            }
+            throw_unless(in_array('admin.websocket.transfer', $permissions), new HttpForbiddenException('You do not have permission to view server transfer logs.'));
 
             // Redirect the websocket request to the new node if the server has been archived.
             if ($server->transfer->archived) {
@@ -58,6 +55,7 @@ class WebsocketController extends ClientApiController
 
         $token = $this->jwtService
             ->setExpiresAt(CarbonImmutable::now()->addMinutes(10))
+            ->setScopes(NodeJwtScope::Websocket)
             ->setUser($request->user())
             ->setClaims([
                 'server_uuid' => $server->uuid,

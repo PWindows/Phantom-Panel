@@ -5,7 +5,7 @@ namespace App\Services\Eggs\Sharing;
 use App\Enums\EggFormat;
 use App\Models\Egg;
 use App\Models\EggVariable;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Yaml\Yaml;
@@ -78,7 +78,7 @@ class EggExporterService
         return null;
     }
 
-    protected function yamlExport(mixed $data): mixed
+    public function yamlExport(mixed $data): mixed
     {
         if ($data instanceof Collection) {
             $data = $data->all();

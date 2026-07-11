@@ -21,7 +21,6 @@ use App\Traits\Filament\CanCustomizeRelations;
 use App\Traits\Filament\CanModifyForm;
 use App\Traits\Filament\CanModifyTable;
 use BackedEnum;
-use Carbon\Carbon;
 use Exception;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -45,6 +44,7 @@ use Filament\Support\Exceptions\Halt;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\HtmlString;
 use Throwable;
 
@@ -93,9 +93,10 @@ class ScheduleResource extends Resource
                     ->required()
                     ->default(1),
                 ToggleButtons::make('status')
+                    ->label(trans('server/schedule.status'))
                     ->enum(ScheduleStatus::class)
                     ->formatStateUsing(fn (?Schedule $schedule) => $schedule?->status->value ?? 'new')
-                    ->options(fn (?Schedule $schedule) => [$schedule?->status->value ?? 'new' => $schedule?->status->getLabel() ?? 'New'])
+                    ->options(fn (?Schedule $schedule) => [$schedule?->status->value ?? 'new' => $schedule?->status->getLabel() ?? trans('server/schedule.schedule_status.new')])
                     ->visibleOn('view'),
                 Section::make(trans('server/schedule.cron'))
                     ->description(function (Get $get) {

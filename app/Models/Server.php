@@ -6,6 +6,7 @@ use App\Contracts\Validatable;
 use App\Enums\ContainerStatus;
 use App\Enums\ServerResourceType;
 use App\Enums\ServerState;
+use App\Enums\WebhookScope;
 use App\Exceptions\Http\Server\ServerStateConflictException;
 use App\Models\Traits\HasIcon;
 use App\Repositories\Daemon\DaemonServerRepository;
@@ -382,6 +383,15 @@ class Server extends Model implements HasAvatar, Validatable
     }
 
     /**
+     * @return HasMany<WebhookConfiguration, $this>
+     */
+    public function webhookConfigurations(): HasMany
+    {
+        return $this->hasMany(WebhookConfiguration::class, 'server_id', 'id')
+            ->where('scope', WebhookScope::Server);
+    }
+
+    /**
      * Returns all the activity log entries where the server is the subject.
      */
     public function activity(): MorphToMany
@@ -419,9 +429,7 @@ class Server extends Model implements HasAvatar, Validatable
      */
     public function validateCurrentState(): void
     {
-        if ($this->isInConflictState()) {
-            throw new ServerStateConflictException($this);
-        }
+        throw_if($this->isInConflictState(), new ServerStateConflictException($this));
     }
 
     /**
@@ -432,11 +440,9 @@ class Server extends Model implements HasAvatar, Validatable
      */
     public function validateTransferState(): void
     {
-        if (
-            !$this->isInstalled() ||
+        if (!$this->isInstalled() ||
             $this->status === ServerState::RestoringBackup ||
-            !is_null($this->transfer)
-        ) {
+            !is_null($this->transfer)) {
             throw new ServerStateConflictException($this);
         }
     }
@@ -457,6 +463,10 @@ class Server extends Model implements HasAvatar, Validatable
 
     public function retrieveStatus(): ContainerStatus
     {
+        if ($this->node->isUnderMaintenance()) {
+            return ContainerStatus::Missing;
+        }
+
         return cache()->remember("servers.$this->uuid.status", now()->addSeconds(15), function () {
             // @phpstan-ignore myCustomRules.forbiddenGlobalFunctions
             $details = app(DaemonServerRepository::class)->setServer($this)->getDetails();
@@ -470,6 +480,10 @@ class Server extends Model implements HasAvatar, Validatable
      */
     public function retrieveResources(): array
     {
+        if ($this->node->isUnderMaintenance()) {
+            return [];
+        }
+
         return cache()->remember("servers.$this->uuid.resources", now()->addSeconds(15), function () {
             // @phpstan-ignore myCustomRules.forbiddenGlobalFunctions
             $details = app(DaemonServerRepository::class)->setServer($this)->getDetails();

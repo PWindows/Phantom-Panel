@@ -52,9 +52,7 @@ class EggImporterService
      */
     public function fromFile(UploadedFile $file, ?Egg $egg = null): Egg
     {
-        if ($file->getError() !== UPLOAD_ERR_OK) {
-            throw new InvalidFileUploadException('The selected file was not uploaded successfully');
-        }
+        throw_if($file->getError() !== UPLOAD_ERR_OK, new InvalidFileUploadException('The selected file was not uploaded successfully'));
 
         $extension = strtolower($file->getClientOriginalExtension());
         $mime = $file->getMimeType();
@@ -81,9 +79,7 @@ class EggImporterService
     {
         $extension = strtolower(pathinfo(parse_url($url, PHP_URL_PATH), PATHINFO_EXTENSION));
 
-        if (empty($extension)) {
-            throw new InvalidFileUploadException('Unsupported file format.');
-        }
+        throw_if(empty($extension), new InvalidFileUploadException('Unsupported file format.'));
 
         $format = match ($extension) {
             'yaml', 'yml' => EggFormat::YAML,
@@ -113,6 +109,7 @@ class EggImporterService
                 'uuid' => $uuid,
                 'author' => Arr::get($parsed, 'author'),
                 'copy_script_from' => null,
+                'config_from' => null,
             ]);
 
             for ($i = 0; $i < count($parsed['variables']); $i++) {
@@ -146,7 +143,7 @@ class EggImporterService
      *
      * @throws InvalidFileUploadException|JsonException
      */
-    protected function parse(string $content, EggFormat $format): array
+    public function parse(string $content, EggFormat $format): array
     {
         try {
             $parsed = match ($format) {

@@ -7,6 +7,7 @@ use App\Exceptions\Repository\FileExistsException;
 use App\Exceptions\Repository\FileNotEditableException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\Response;
 
 class DaemonFileRepository extends DaemonRepository
@@ -22,22 +23,22 @@ class DaemonFileRepository extends DaemonRepository
      */
     public function getContent(string $path, ?int $notLargerThan = null): string
     {
-        $response = $this->getHttpClient()->get("/api/servers/{$this->server->uuid}/files/contents",
-            ['file' => $path]
-        );
+        try {
+            $response = $this->getHttpClient()->get("/api/servers/{$this->server->uuid}/files/contents",
+                ['file' => $path]
+            );
+        } catch (RequestException $exception) {
+            $status = $exception->response->status();
+
+            throw_if($status === 400, new FileNotEditableException());
+
+            throw_if($status === 404, new FileNotFoundException());
+
+            throw $exception;
+        }
 
         $length = $response->header('Content-Length');
-        if ($notLargerThan && $length > $notLargerThan) {
-            throw new FileSizeTooLargeException();
-        }
-
-        if ($response->status() === 400) {
-            throw new FileNotEditableException();
-        }
-
-        if ($response->status() === 404) {
-            throw new FileNotFoundException();
-        }
+        throw_if($notLargerThan && $length > $notLargerThan, new FileSizeTooLargeException());
 
         return $response;
     }
@@ -51,16 +52,16 @@ class DaemonFileRepository extends DaemonRepository
      */
     public function putContent(string $path, string $content): Response
     {
-        $response = $this->getHttpClient()
-            ->withQueryParameters(['file' => $path])
-            ->withBody($content)
-            ->post("/api/servers/{$this->server->uuid}/files/write");
+        try {
+            return $this->getHttpClient()
+                ->withQueryParameters(['file' => $path])
+                ->withBody($content)
+                ->post("/api/servers/{$this->server->uuid}/files/write");
+        } catch (RequestException $exception) {
+            throw_if($exception->response->status() === 400, new FileExistsException());
 
-        if ($response->status() === 400) {
-            throw new FileExistsException();
+            throw $exception;
         }
-
-        return $response;
     }
 
     /**
@@ -85,18 +86,18 @@ class DaemonFileRepository extends DaemonRepository
      */
     public function createDirectory(string $name, string $path): Response
     {
-        $response = $this->getHttpClient()->post("/api/servers/{$this->server->uuid}/files/create-directory",
-            [
-                'name' => $name,
-                'path' => $path,
-            ]
-        );
+        try {
+            return $this->getHttpClient()->post("/api/servers/{$this->server->uuid}/files/create-directory",
+                [
+                    'name' => $name,
+                    'path' => $path,
+                ]
+            );
+        } catch (RequestException $exception) {
+            throw_if($exception->response->status() === 400, new FileExistsException());
 
-        if ($response->status() === 400) {
-            throw new FileExistsException();
+            throw $exception;
         }
-
-        return $response;
     }
 
     /**
