@@ -25,6 +25,7 @@ class QueueStep
      */
     public static function make(PanelInstaller $installer): Step
     {
+        $isWindows = PHP_OS_FAMILY === 'Windows';
         return Step::make('queue')
             ->label(trans('installer.queue.title'))
             ->columns()
@@ -35,31 +36,34 @@ class QueueStep
                     ->required()
                     ->inline()
                     ->options(self::QUEUE_DRIVERS)
-                    ->disableOptionWhen(fn ($value, Get $get) => $value === 'redis' && $get('env_cache.CACHE_STORE') !== 'redis')
+                    ->disableOptionWhen(fn($value, Get $get) => $value === 'redis' && $get('env_cache.CACHE_STORE') !== 'redis')
                     ->default(config('queue.default')),
                 Toggle::make('done')
                     ->label(trans('installer.queue.fields.done'))
-                    ->accepted(fn () => !@file_exists('/.dockerenv'))
+                    ->accepted(fn() => !@file_exists('/.dockerenv'))
                     ->inline(false)
                     ->validationMessages([
                         'accepted' => trans('installer.queue.fields.done_validation'),
                     ])
-                    ->hidden(fn () => @file_exists('/.dockerenv')),
+                    ->hidden(fn() => @file_exists('/.dockerenv')),
                 TextInput::make('crontab')
                     ->label(new HtmlString(trans('installer.queue.fields.crontab')))
                     ->disabled()
-                    ->hintCopy()
-                    ->default('(sudo crontab -l -u www-data 2>/dev/null; echo "* * * * * php ' . base_path() . '/artisan schedule:run >> /dev/null 2>&1") | sudo crontab -u www-data -')
-                    ->hidden(fn () => @file_exists('/.dockerenv'))
+                    ->hintCopy()->default(
+                        $isWindows
+                        ? 'schtasks /create /sc minute /mo 1 /tn "LaravelSchedule" /tr "php ' . base_path() . '\\artisan schedule:run" /ru SYSTEM'
+                        : '(sudo crontab -l -u www-data 2>/dev/null; echo "* * * * * php ' . base_path() . '/artisan schedule:run >> /dev/null 2>&1") | sudo crontab -u www-data -'
+                    )
+                    ->hidden(fn() => @file_exists('/.dockerenv'))
                     ->columnSpanFull(),
                 TextInput::make('queueService')
                     ->label(new HtmlString(trans('installer.queue.fields.service')))
                     ->disabled()
                     ->hintCopy()
                     ->default('sudo php ' . base_path() . '/artisan p:environment:queue-service')
-                    ->hidden(fn () => @file_exists('/.dockerenv'))
+                    ->hidden(fn() => @file_exists('/.dockerenv'))
                     ->columnSpanFull(),
             ])
-            ->afterValidation(fn () => $installer->writeToEnv('env_queue'));
+            ->afterValidation(fn() => $installer->writeToEnv('env_queue'));
     }
 }
